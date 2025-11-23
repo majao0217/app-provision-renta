@@ -134,8 +134,11 @@ export const calculateTaxProvision = (incomeData, deductionsData) => {
     totalINCR += ss;
   }
 
-  // Net Income (Ingreso Neto)
+  // Net Income (Ingreso Neto TOTAL - includes all income types)
   const netIncome = totalGrossIncome - totalCosts - totalINCR;
+
+  // Labor Net Income (ONLY for 25% exempt calculation)
+  const laborNetIncome = laborIncomeGross - totalINCR;
 
   // 3. Deductions & Exemptions
 
@@ -170,11 +173,12 @@ export const calculateTaxProvision = (incomeData, deductionsData) => {
   const voluntaryContributions = parse(deductionsData.aportesVoluntarios); // AFC + Vol Pension
   breakdown.exemptions.voluntaryContributions = voluntaryContributions;
 
-  // 25% Exempt Labor Income
+  // 25% Exempt Labor Income - ONLY applies to LABOR income (Art 206 ET)
   let exempt25 = 0;
   if (laborIncomeNetFor25 > 0) {
-    // Base = Net Income - Deductions (Subject to Limit) - Voluntary Contributions
-    const baseFor25 = Math.max(0, netIncome - deductionsSubjectToLimit - voluntaryContributions);
+    // Base = Labor Net Income - Labor-related deductions - Voluntary Contributions
+    // CORRECTED: Use laborNetIncome (only labor) NOT netIncome (all income)
+    const baseFor25 = Math.max(0, laborNetIncome - deductionsSubjectToLimit - voluntaryContributions);
     exempt25 = Math.min(baseFor25 * 0.25, EXEMPT_25_LIMIT_UVT * UVT_2025);
   }
   breakdown.exemptions.exempt25 = exempt25;
