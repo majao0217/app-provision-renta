@@ -1,0 +1,26 @@
+.currency-input {
+    width: 100%;
+    padding: 0.875rem;
+    border: 1px solid var(--input-border, #cbd5e1);
+    border-radius: 8px;
+    font-size: 1.05rem;
+    transition: all 0.2s ease;
+    text-align: right;
+    font-family: 'Inter', monospace;
+    background-color: var(--input-bg, #ffffff) !important;
+    color: var(--input-text, #1e293b) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.currency-input:focus {
+    border-color: var(--primary-color, #4f46e5);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.currency-input:disabled {
+    background-color: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed;
+    box-shadow: none;
+}
